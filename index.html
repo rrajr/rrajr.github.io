@@ -1,2 +1,69 @@
-Welcome to rrajr! 
-Let's ideate.
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv='X-UA-Compatible'>
+		<meta name="viewport" content='width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1'>
+		<meta name='apple-mobile-web-app-capable' content='yes'>
+		<meta name='mobile-web-app-capable' content='yes'>
+		<title>rRajr Ideations</title>
+		<meta name='description' content="Ideas In Action">
+		<meta name='author' content='rRajr'>
+		<link rel='shortcut icon' type='image/png' href='../res/rrajr.png'>
+		<link rel="apple-touch-icon" href="../res/rrajr.png"/>
+		<link rel='manifest' href='manifest.json'>
+		<link rel="stylesheet" href="../css/w3.css"/>
+		<link rel="stylesheet" href="../css/app.css"/>
+		<link rel="stylesheet" href="../css/fontawesome.min.css" />
+		<link rel="stylesheet" href="../css/solid.min.css" rel="stylesheet" />
+		<script>
+			if('serviceWorker' in navigator){navigator.serviceWorker.register('../sw.js').then(function(reg){}).catch(function(err){});}
+		</script>
+	</head>
+	<body>  
+    <div class="w3-row">
+		<div class="w3-top" style="z-index:2;">
+			<div class="w3-bar w3-dark-grey">					
+				<a href="mailto:iamrrajr@gmail.com" class="w3-bar-item w3-button w3-large w3-hover-green w3-padding-small" style="color:yellow;">Ideas In Action</a>
+				<a href="mailto:iamrrajr@gmail.com" class="w3-bar-item w3-button w3-hover-green w3-padding-small w3-right"><img src="../res/rrajr.png" class="img-circle" alt="" width="28" height="28"></a>
+    		</div>
+		</div>
+	</div>     
+    <div class="w3-content w3-container w3-center" style="max-width:650px;">
+		<div class="w3-row" style="padding-top:40px; z-index:1">
+			<a href="mailto:iamrrajr@gmail.com"><img src="../res/rrajr.png" class="img-circle" alt="" width="100" height="100"></a><br>
+			<span class="w3-pink w3-tag" style="font-size:25px;"><u>Ideas In Action</u></span>
+		</div>
+		<p id="installMsg" class="w3-hide">For better app-like user experience<br><button class="w3-button w3-blue w3-hover-pink w3-round-xxlarge w3-center" id="install-button">Install This Webapp</button></p>
+		<div class="w3-container w3-pale-blue w3-leftbar w3-border-blue w3-border w3-content w3-margin-top">
+			<p style='text-align:left;margin-bottom:3px;'>
+				<i class="fa-solid fa-arrow-left-long fa-xl w3-text-dark-grey" style='padding-top:10px;'></i>
+				<i class="fa-solid fa-circle fa-xl w3-text-green" style='padding-top:10px;'></i>
+				<i class="fa-solid fa-arrow-left-long fa-xl w3-text-dark-grey" style='padding-top:10px;'></i>
+				<i class="fa-solid fa-arrow-down-up-across-line fa-xl w3-text-pink" style='padding-top:10px;'></i>
+				<i class="fa-solid fa-arrow-right-long fa-xl w3-text-dark-grey" style='padding-top:10px;'></i>
+				<i class="fa-solid fa-arrow-right-long fa-xl w3-text-dark-grey" style='padding-top:10px;'></i>
+				<i class="fa-solid fa-circle fa-xl w3-text-blue" style='padding-top:10px;'></i>
+			</p>
+			<p class="w3-text-pink" style='margin:0;text-align:left;font-size:25px;'>Grid Transit</p>
+			<p class="w3-text-dark-grey" style='margin-top:0;text-align:left;color:#333333;'>Create a transit network to manage passenger rush. <a href="../grid"><span class="w3-tag w3-pink w3-hover-blue" style='float:right;margin-bottom:7px;'>Play!</span></a></p>
+		</div>
+    </div>       
+	</body>
+</html>
+<script>
+	let deferredPrompt;
+	const addBtn = document.getElementById('install-button');
+	window.addEventListener('beforeinstallprompt', (e) => {
+		e.preventDefault();
+		deferredPrompt = e;
+    document.getElementById('installMsg').classList.remove("w3-hide");
+		addBtn.addEventListener('click', (e) => {
+      document.getElementById('installMsg').classList.add("w3-hide");
+			deferredPrompt.prompt();
+			deferredPrompt.userChoice.then((choiceResult) => {
+				deferredPrompt = null;
+			});
+		});
+	});
+</script>
