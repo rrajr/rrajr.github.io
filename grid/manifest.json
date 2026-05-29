@@ -5,7 +5,8 @@
 	"theme_color":"#000000",
 	"display":"standalone",
 	"orientation":"landscape",
-	"start_url":"../grid/index.html",
+	"scope": "/grid/"
+	"start_url":"/grid/index.html",
 	"icons": [
     {
 			"src": "../res/icons/icon1024.png",

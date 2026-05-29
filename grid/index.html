@@ -10,7 +10,7 @@
 		<meta name='mobile-web-app-capable' content='yes'>
 		<link rel="shortcut icon" type="image/x-icon" href="../res/rrajr.png">
 		<link rel="apple-touch-icon" href="../res/rrajr.png"/>
-		<link rel='manifest' href='manifest.json'>		
+		<link rel='manifest' href='/grid/manifest.json'>		
 		<link rel="stylesheet" href="../css/w3.css"/>
 		<link rel="stylesheet" href="../css/fontawesome.min.css" />
 		<link rel="stylesheet" href="../css/solid.min.css" />
@@ -76,6 +76,7 @@
 			<div class="w3-bar w3-black Header">
 				<button class="w3-button w3-medium tablink w3-red w3-hover-red setbtn" onclick="openTab(event,'Sets')" id="SetsBtn">Settings</button>
 				<button class="w3-button w3-medium tablink w3-hover-red setbtn" onclick="openTab(event,'Help')" id="HelpBtn">Help</button>
+				<button class="w3-button w3-medium tablink w3-hover-red setbtn" onclick="openTab(event,'Credit')" id="CreditBtn">Attributions</button>
 				<i class="fa-solid fa-circle-xmark fa-lg" style="float:right;line-height:1.5em;cursor:default;" onclick="hideHelpBox()"></i>
 			</div>      
 			<div id="Sets" class="w3-container w3-border tabs w3-center w3-padding-small" style="height:306px;overflow-y:auto">
@@ -116,7 +117,44 @@
 				<li class="w3-medium w3-center"><u>GAME MISSION</u><br>Move PAX. Earn <i class="fa-solid fa-sack-dollar w3-text-purple"></i>.<br>Clear the grid of all the waiting PAX as quickly as possible with the available <i class="fa-solid fa-sack-dollar w3-text-purple"></i>.</li>
 				<li class="w3-medium w3-center"><u>GAME CLOCK IS TICKING</u><br><br><b>HAPPY GAMING!!!</b><br><br><span class="w3-pale-yellow w3-text-red">"Wisely and slow.<br>They stumble that run fast."</span></li>
 				</ul>
-			</div>			
+			</div>
+			<div id="Credit" class="w3-container w3-border tabs" style="display:none;height:306px;overflow-y:auto">
+				<p class="w3-medium" style="margin-top:3px;">This purely HTML web application uses the following notable Javascript and CSS libraries:
+				<table class="w3-medium" style="width:100%;">
+					<tr>
+						<th class="w3-info" style='text-align:left;width:65%'>Library</th>
+						<th class="w3-info" style='text-align:left;width:35%'>License</th>
+					</tr>
+					<tr>
+						<td style='text-align:left;width:65%'><a target="_blank"  href="https://www.w3schools.com/w3css/w3css_downloads.asp">W3.css</a></td>
+						<td style='text-align:left;width:35%'>FREE</td>
+					</tr>
+					<tr>
+						<td style='text-align:left;width:65%'><a target="_blank"  href="https://jquery.com/">jQuery</a></td>
+						<td style='text-align:left;width:35%'>MIT</td>
+					</tr>
+					<tr>
+						<td style='text-align:left;width:65%'><a target="_blank"  href="https://fonts.google.com/specimen/Ubuntu">Google Fonts - Ubuntu</a></td>
+						<td style='text-align:left;width:35%'>Ubuntu Font</td>
+					</tr>
+					<tr>
+						<td style='text-align:left;width:65%'><a target="_blank"  href="https://fonts.google.com/specimen/PT+Sans">Google Fonts - PT Sans</a></td>
+						<td style='text-align:left;width:35%'>OFL</td>
+					</tr>
+					<tr>
+						<td style='text-align:left;width:65%'><a target="_blank"  href="https://github.com/FortAwesome/Font-Awesome">Font Awesome Free</a></td>
+						<td style='text-align:left;width:35%'>MIT, OFL, CC BY 4</td>
+					</tr>
+					<tr>
+						<td style='text-align:left;width:65%'><a target="_blank"  href="https://github.com/apvarun/toastify-js">toastify-js</a></td>
+						<td style='text-align:left;width:35%'>MIT</td>
+					</tr>
+					<tr>
+						<td style='text-align:left;width:65%'><a target="_blank" href="https://github.com/VDWWD/draggable-div-with-touch">draggable-div-with-touch</a></td>
+						<td style='text-align:left;width:35%'>Unknown</td>
+					</tr>
+				</table>
+			</div>	
 		</div>		
 		<div id="vehInfo" class="w3-modal" style="z-index:100001;">
 			<div class="w3-modal-content" style="width:300px;">
