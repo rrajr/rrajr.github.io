@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv='X-UA-Compatible'>
+		<meta name="viewport" content='width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1'>
+		<title>Grid Transit</title>
+		<meta name='author' content='rRajr'>
+		<meta name='apple-mobile-web-app-capable' content='yes'>
+		<meta name='mobile-web-app-capable' content='yes'>
+		<link rel="shortcut icon" type="image/x-icon" href="../res/rrajr.png">
+		<link rel="apple-touch-icon" href="../res/rrajr.png"/>
+		<link rel='manifest' href='manifest.json'>		
+		<link rel="stylesheet" href="../css/w3.css"/>
+		<link rel="stylesheet" href="../css/fontawesome.min.css" />
+		<link rel="stylesheet" href="../css/solid.min.css" />
+		<link rel="stylesheet" href="../css/draggable-div-with-touch.css" />
+		<link rel="stylesheet" href="../css/toastify.min.css"/>
+		<link rel="stylesheet" href="../css/app.css"/>
+		<link rel="stylesheet" href="css/grid.css"/>    
+		<script src="../js/jquery@3.7.1.min.js"></script>
+		<script src="../js/toastify-js.js"></script>
+		<script src="js/grid.js"></script>
+	</head>
+	<body>	
+		<a id='exportLink' class='hidden'></a>
+		<input type='file' id='importFile' style='display:none;' onchange='processImport();'>
+		<div id='uiblock' style='display:none;background: rgba(250,250,210,.8) url("../res/sqspinner.gif") no-repeat;width: 100%;height: 100%;position: fixed;top: 0;left: 0;z-index: 99999;background-repeat: no-repeat;background-attachment: fixed;background-position: center;'></div>		
+		<canvas id="gcanvas">HTML5 canvas is not supported in this browser!</canvas>		
+		<div class="buttons topleftbuttons">
+			<button class="w3-button w3-large w3-circle w3-red w3-hover-red" onclick="openSettings('Sets')"><i class="fa-solid fa-cog fa-2xs" ></i></button>
+		</div>		
+		<div class="buttons toprightbuttons">
+			<button class="w3-button w3-large w3-circle w3-red w3-hover-red" onclick="toggleFullscreen(this)"><i class="fa-solid fa-up-right-and-down-left-from-center fa-2xs" ></i></button>
+		</div>		
+		<div class="buttons bottomleftbuttons">
+			<button class="w3-button w3-large w3-circle w3-red w3-hover-red" onclick="toggleBuildMode(this)"><i class="fa-solid fa-screwdriver-wrench fa-2xs" ></i></button>
+		</div>		
+		<div class="buttons bottomrightbuttons">
+			<button class="w3-button w3-large w3-circle w3-red w3-hover-red" onclick="toggleAnimation(this)"><i class="fa-solid fa-pause fa-sm playpause" ></i></button>
+		</div>				
+		<div class="w3-row s12 m12 l12" style="background-color: black;margin-top:-6px;padding-top:5px;padding-bottom:2px;">		
+			<div class="w3-col w3-hide-small m3 l3">&nbsp;</div>			
+			<div class="w3-col s6 m3 l3">
+				<div class="w3-row s12 w3-border w3-border-indigo w3-round-xxlarge" style="margin:3px;padding-left:5px;">
+					<div class="w3-col s1 m1 l1 w3-medium" style="height:24px;padding-right:20px;"><i class="fa-solid fa-clock w3-text-aqua" style="padding-top:4.5px;"></i></div>
+					<div class="w3-col s10 m10 l10 w3-left w3-medium" style="text-align:left;color:white;" id="gClock"></div>
+				</div>
+			</div>			
+			<div class="w3-col s6 m3 l3">
+				<div class="w3-row s12 w3-border w3-border-indigo w3-round-xxlarge" style="margin:3px;padding-left:5px;">
+					<div class="w3-col s1 m1 l1 w3-medium" style="height:24px;padding-right:20px;"><i class="fa-solid fa-sack-dollar w3-text-aqua" style="padding-top:4.5px;"></i></div>
+					<div class="w3-col s10 m10 l10 w3-left w3-medium" style="text-align:left;color:white;" id="gMoney"></div>
+				</div>
+			</div>			
+			<div class="w3-col w3-hide-small m3 l3">&nbsp;</div>			
+		</div>		
+		<div class="DraggableDiv" id="DraggableDiv1" style="display:none; height:350px;top:5px;font-size:13px;">
+			<div class="w3-bar w3-black Header">
+				<button class="w3-button w3-medium tablink w3-red w3-hover-red" onclick="openTab(event,'Info')" id="infoBtn">Info</button>
+				<button class="w3-button w3-medium tablink w3-hover-red" onclick="openTab(event,'Conn')">Connectivity</button>
+				<button class="w3-button w3-medium tablink w3-hover-red" onclick="openTab(event,'Vehs')">Vehicles</button>
+				<i class="fa-solid fa-circle-xmark fa-lg" style="float:right;line-height:1.5em;cursor:default;" onclick="hideInfoBox()"></i>
+			</div>      
+			<div id="Info" class="w3-container w3-border tabs" style="height:306px;overflow-y:auto">
+				<table id="tbl_boxInfo" style="width:100%;"></table>
+			</div>
+			<div id="Conn" class="w3-container w3-border tabs" style="display:none;height:306px;overflow-y:auto">
+				<table id="tbl_boxConn" style="width:100%;"></table>
+			</div>			
+			<div id="Vehs" class="w3-container w3-border tabs" style="display:none;height:306px;overflow-y:auto">
+				<table id="tbl_boxServ" style="width:100%;"></table>
+			</div>
+		</div>		
+		<div class="DraggableDiv" id="DraggableDiv4" style="display:none; height:350px;top:5px;font-size:13px;">
+			<div class="w3-bar w3-black Header">
+				<button class="w3-button w3-medium tablink w3-red w3-hover-red setbtn" onclick="openTab(event,'Sets')" id="SetsBtn">Settings</button>
+				<button class="w3-button w3-medium tablink w3-hover-red setbtn" onclick="openTab(event,'Help')" id="HelpBtn">Help</button>
+				<i class="fa-solid fa-circle-xmark fa-lg" style="float:right;line-height:1.5em;cursor:default;" onclick="hideHelpBox()"></i>
+			</div>      
+			<div id="Sets" class="w3-container w3-border tabs w3-center w3-padding-small" style="height:306px;overflow-y:auto">
+				<div class="w3-center">
+					<label class="w3-large">Alphanumeric Grid Name</label>
+					<input class="w3-input w3-pale-blue w3-border w3-border-blue w3-round-xxlarge w3-medium" type="text" id="gridName" autocomplete="off">
+					<button style="margin:5px;" class="w3-btn w3-round-xxlarge w3-green w3-medium" onclick="updateName()">Update Name</button>
+				</div>
+				<hr style="margin:7px;">
+				<p class="w3-medium">
+					<button class="w3-btn w3-round-xxlarge w3-blue" onclick="importGame(null, true)">Import Game</button>&emsp;
+					<button class="w3-btn w3-round-xxlarge w3-red" onclick="exportGame()">Export Game</button>
+				</p>
+				<hr style="margin:7px;">
+				<input class="w3-check" type="checkbox" id="pauseOnImport" onclick="setPause(this)">&ensp;
+				<label class="w3-large">Always pause after game import</label>
+				<hr style="margin:7px;">
+				<input class="w3-check" type="checkbox" id="darkMode" onclick="setDark(this)">&ensp;
+				<label class="w3-large">Dark Mode</label>
+			</div>
+			<div id="Help" class="w3-container w3-border tabs" style="display:none;height:306px;overflow-y:auto">
+				<ul class="w3-ul">
+				<li class="w3-medium">There are 40 transit stations on the grid, 10 each of <span class="w3-tag w3-pale-red">RED</span>, <span class="w3-tag w3-light-blue">BLUE</span>, <span class="w3-tag w3-amber">YELLOW</span>  and <span class="w3-tag w3-light-green">GREEN</span> color marked <span class="w3-tag w3-pale-red">1</span> to <span class="w3-tag w3-light-green">10</span>. These stations generate random PAX load at 4 game hours interval.</li>
+				<li class="w3-medium">The <i class="fa-solid fa-clock w3-text-purple"></i> game clock and <i class="fa-solid fa-sack-dollar w3-text-purple"></i> game money counters are placed at the bottom of the screen.</li>
+				<li class="w3-medium">The lower left icon <i class="fa-solid fa-screwdriver-wrench w3-text-red"></i> toggles 'Build' mode. While in 'Build' mode, click/tap on two horizontal/vertical grid blocks on the same grid line to lay the horizontal/vertical track segment between the blocks.</li>
+				<li class="w3-medium">The order in which the grid blocks are clicked/tapped determines the direction of the track. 'Junctions' <span class="w3-tag w3-green"><i class="fa-solid fa-plus"></i></span> are created at the extremities of the track segments. 'Junctions' allows vehicle movement in all direction. Each station is also a 'Junction'.</li>
+				<li class="w3-medium">To remove an existing track segment between 2 grid blocks, click the blocks in the same order as that of the direction of the existing track segment.</li>
+				<li class="w3-medium">To reverse an existing track segment between 2 grid blocks, click the blocks in the opposite order as that of the direction of the existing track segment.</li>
+				<li class="w3-medium">To create a new 'Junction' on a grid block, click the block twice. To remove an existing 'Junction' from a grid block, click the 'Junction' block twice.</li>
+				<li class="w3-medium">Mixing segment types between 2 <span class="w3-tag w3-green"><i class="fa-solid fa-plus"></i></span> will make the path between the <span class="w3-tag w3-green"><i class="fa-solid fa-plus"></i></span> isolated.</li>
+				<li class="w3-medium">Exit out of 'Build Mode' to resume the game cycle.</li>
+				<li class="w3-medium">Clicking a station will open the 'Information' box. The 'Info' tab lists the PAX count at the station waiting to move to the 39 other stations.</li>
+				<li class="w3-medium">The 'Vehicles' tab lists all the vehicles plying on the grid. The 'Info' icon of each of the vehicles on the list opens a 'Vehicle Information' box which allows updating 'Route' of a vehicle.</li>
+				<li class="w3-medium">The 'Route' of a vehicle is auto-reversing, i.e. forward journey 'Route' will be auto reversed for the return journey.</li>
+				<li class="w3-medium">A vehicle by default waits 10 game minutes at each 'Stop'. This can be changed to make the vehicle 'wait till full' at desired 'Stop' from the 'Vehicle Information' box.</li>
+				<li class="w3-medium">To make a 'Route' update of a moving vehicle, first 'Pause' the vehicle from 'Vehicle Information' box. Once vehicle is paused, a 'Stop' can be added/removed. Vehicle 'Origin' stop cannot be removed.</li>
+				<li class="w3-medium">For any traffic gridlock, click the 'SOS' button on the 'Vehicle Information' box to clear the traffic congestion (if atomatically possible).</li>
+				<li class="w3-medium w3-center"><u>GAME MISSION</u><br>Move PAX. Earn <i class="fa-solid fa-sack-dollar w3-text-purple"></i>.<br>Clear the grid of all the waiting PAX as quickly as possible with the available <i class="fa-solid fa-sack-dollar w3-text-purple"></i>.</li>
+				<li class="w3-medium w3-center"><u>GAME CLOCK IS TICKING</u><br><br><b>HAPPY GAMING!!!</b><br><br><span class="w3-pale-yellow w3-text-red">"Wisely and slow.<br>They stumble that run fast."</span></li>
+				</ul>
+			</div>			
+		</div>		
+		<div id="vehInfo" class="w3-modal" style="z-index:100001;">
+			<div class="w3-modal-content" style="width:300px;">
+				<div class="w3-container">
+					<div class="w3-bar w3-black w3-padding-small w3-margin-top Header">
+						<button class="w3-button w3-medium tablink1 w3-red w3-hover-red" onclick="openTab1(event,'vehStops')" id="stopsBtn">Stoppages</button>
+						<button class="w3-button w3-medium tablink1 w3-hover-red" onclick="openTab1(event,'vehDetails')">Details</button>
+						<i class="fa-solid fa-circle-xmark fa-lg" style="float:right;line-height:1.5em;cursor:default;" onclick="hideVehicleInfo()"></i>
+					</div>
+					<div id="vehStops" class="w3-container w3-border tabs1 w3-center w3-padding-small w3-margin-bottom">
+						<table class="w3-medium" style="width:100%;">
+							<tr>
+								<td style='text-align:center;width:35%' colspan=2 id="vID_Info">&nbsp;</td>
+								<td style='text-align:center;width:65%' colspan=3 id="vStat_Info">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style='text-align:center;width:35%' colspan=2><i id="vPP_Info" class='fa-solid fa-play-circle fa-2x' onclick='runVehicle(null, this)'></i></td>
+								<td style='text-align:center;width:65%' colspan=3 id="vLoad_Info">&nbsp;</td>
+							</tr>
+							<tr id='stpTblHdr' class='w3-blue-gray'>
+								<td style='text-align:center;width:15%'>DEL</td>
+								<td style='text-align:center;width:20%'>STOP</td>
+								<td style='text-align:center;width:20%'>PAX</td>
+								<td style='text-align:center;width:30%'>WAIT</td>
+								<td style='text-align:center;width:15%;'>ADD</td>
+							</tr>
+						</table>
+						<span class="w3-small w3-left w3-text-red">* Vehicle Origin</span><br id="vorig">
+					</div>
+					<div id="vehDetails" class="w3-container w3-border tabs1 w3-padding-small w3-margin-bottom" style="display:none;">
+						<table class="w3-medium" style="width:100%;">
+							<tr>
+								<td style='text-align:left;width:65%'>Hours In Service</td>
+								<td style='text-align:center;width:35%' id="vAge_Info">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style='text-align:left;width:65%'>Utilization %</td>
+								<td style='text-align:center;width:35%' id="vUtil_Info">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style='text-align:left;width:65%'>Current PAX Load</td>
+								<td style='text-align:center;width:35%' id="vLoad_Info2">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style='text-align:left;width:65%'>Total PAX Carried</td>
+								<td style='text-align:center;width:35%' id="vPAX_Info">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style='text-align:left;width:65%'>Total Grids Travelled</td>
+								<td style='text-align:center;width:35%' id="vGRIDs_Info">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style='text-align:left;width:65%'>Total Revenue Earned</td>
+								<td style='text-align:center;width:35%' id="vRev_Info">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style='text-align:left;width:65%'>Total Cost Incurred</td>
+								<td style='text-align:center;width:35%' id="vCost_Info">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style='text-align:left;width:65%'>Profit/Loss</td>
+								<td style='text-align:center;width:35%' id="vPL_Info">&nbsp;</td>
+							</tr>
+						</table>
+					</div>					
+				</div>
+			</div>
+		</div>		
+		<div id="stopSel" class="w3-modal" style="z-index:100005;">
+			<div class="w3-modal-content" style="width:100px;">
+				<div class="w3-container w3-padding-small w3-center">
+					<table class="w3-medium w3-center" id="tbl_stopSel" style="width:100%;"></table>
+					<i class="fa-solid fa-circle-xmark fa-lg" onclick='$("#stopSel").hide();'></i>
+				</div>
+			</div>
+		</div>		
+  </body>
+</html>
+<script src="../js/draggable-div-with-touch.js"></script>
