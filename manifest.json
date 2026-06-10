@@ -3,7 +3,7 @@
 	"name":"rRajr",
 	"background_color":"#000000",
 	"theme_color":"#000000",
-	"display":"fullscreen",
+	"display":"standalone",
 	"orientation":"any",
 	"start_url":"./index.html",
 	"icons": [
