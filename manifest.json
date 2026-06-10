@@ -3,8 +3,8 @@
 	"name":"rRajr",
 	"background_color":"#000000",
 	"theme_color":"#000000",
-	"display":"standalone",
-	"orientation":"landscape",
+	"display":"fullscreen",
+	"orientation":"any",
 	"start_url":"./index.html",
 	"icons": [
     {
